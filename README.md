@@ -9,16 +9,16 @@
 ![Parts](https://img.shields.io/badge/parts-19-blue.svg)
 ![Standards](https://img.shields.io/badge/base-NIST%20800--115%20%C2%B7%20PTES%20%C2%B7%20OWASP%20%C2%B7%20ATT%26CK-brightgreen.svg)
 
-**One training path from the fundamentals of networking to working command of every assessment
-domain — network, wireless, web, API, cloud and directory.** It assumes only that you know what an
-IP address and a firewall are, and takes you to operating standard: methodology, tools, example
+**A practical reference across network, wireless, web, API, cloud and directory assessment.**
+It assumes basic familiarity with IP addresses and firewalls, and introduces methodology, tools, example
 commands, the errors juniors make, and the deeper reference on protocols, attacks, databases and how
 real corporate and banking networks are actually built.
 
 ## 📖 Read it
 
 - **[Download the PDF](Network-Security-Assessment-Handbook.pdf)** (138 pages) — the best way to read it.
-- Or open **[`handbook.html`](handbook.html)** for the browsable version.
+- Download **[`handbook.html`](handbook.html)** using GitHub's raw-file download and open it locally
+  for offline browsing. The repository link displays source, not a hosted website.
 
 ## Who it's for
 
