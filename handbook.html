@@ -3329,6 +3329,9 @@ pre{position:relative}
   function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; var p=max>0?(h.scrollTop/max)*100:0; prog.style.width=p+'%'; top.classList.toggle('on',h.scrollTop>600); }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
   top.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  /* ---- 7b. keep the requested anchor in view after the layer inserted elements above it ---- */
+  if(location.hash){ var tgt=document.getElementById(location.hash.slice(1)); if(tgt){ setTimeout(function(){ tgt.scrollIntoView({block:'start'}); },60); } }
+  window.addEventListener('hashchange',function(){ var el=document.getElementById(location.hash.slice(1)); if(el) el.scrollIntoView({block:'start'}); });
   /* ---- 8. keyboard ---- */
   function curPart(){ var y=window.scrollY+120; var c=0; partMeta.forEach(function(pm,i){ if(pm.el.offsetTop<=y) c=i; }); return c; }
   document.addEventListener('keydown',function(e){ var tag=(e.target.tagName||'').toLowerCase(); if(tag==='input'||tag==='textarea'||e.ctrlKey||e.metaKey||e.altKey) return;
