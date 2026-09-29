@@ -8,6 +8,8 @@
   <a href="https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html"><img src="https://img.shields.io/badge/Read%20online-open%20the%20handbook-0f766e?style=for-the-badge" alt="Read online"></a>
   &nbsp;
   <a href="https://github.com/abdullahzarshaid/network-security-assessment-handbook/raw/main/Network-Security-Assessment-Handbook.pdf"><img src="https://img.shields.io/badge/Download-PDF%20(138%20pages)-14314a?style=for-the-badge" alt="Download PDF"></a>
+  &nbsp;
+  <a href="https://github.com/abdullahzarshaid/posturekit"><img src="https://img.shields.io/badge/Companion%20tool-PostureKit-3f8f5b?style=for-the-badge" alt="PostureKit"></a>
 </p>
 
 ![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)
@@ -18,15 +20,17 @@
 **A practical reference across network, wireless, web, API, cloud and directory assessment.**
 It assumes basic familiarity with IP addresses and firewalls, and introduces methodology, tools, example
 commands, the errors juniors make, and the deeper reference on protocols, attacks, databases and how
-real corporate and banking networks are actually built.
+real corporate and banking networks are actually built. Part VII is the complete specification of an
+open-source host assessment toolkit, published alongside it as
+[PostureKit](https://github.com/abdullahzarshaid/posturekit).
 
 ## Read it
 
 Three ways, pick one:
 
-1. **[Read online](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html)**: the full handbook as a website, with a clickable contents panel, section links and a light or dark theme. Every part in the table below is a direct link.
+1. **[Read online](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html)**: the full handbook as a website with full-text search (press `/`), a contents panel that follows your position, click-to-enlarge diagrams, copy buttons on command blocks, previous and next links, section anchors, keyboard navigation and a light or dark theme. Every part in the table below is a direct link.
 2. **[Download the PDF](https://github.com/abdullahzarshaid/network-security-assessment-handbook/raw/main/Network-Security-Assessment-Handbook.pdf)** (138 pages): bookmarked, with a clickable table of contents, for offline reading and printing.
-3. **[Download `handbook.html`](https://github.com/abdullahzarshaid/network-security-assessment-handbook/raw/main/handbook.html)** and open it in any browser for offline browsing with the same navigation as the website.
+3. **[Download `handbook.html`](https://github.com/abdullahzarshaid/network-security-assessment-handbook/raw/main/handbook.html)** and open it in any browser for offline browsing with the same features as the website.
 
 ## Who it's for
 
@@ -44,22 +48,30 @@ standards-based reference for network security assessment.
 | IV | [Network penetration testing](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p4) |
 | V | [Wireless assessment](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p5) |
 | VI | [Web, API and cloud assessment](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p6) |
-| VII | [The host assessment toolkit: full specification](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p7) |
+| VII | [The host assessment toolkit: full specification](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p7) (code: [PostureKit](https://github.com/abdullahzarshaid/posturekit)) |
 | VIII | [Engagement management](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p8) |
-| IX | [Worked scenarios](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p10) |
-| X | [Desk reference](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p11) |
-| XI | [Lessons from the field](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p12) |
-| XII | [A first engagement, walked through](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p13) |
-| XIII | [Protocols in depth: the language of the wire](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p14) |
-| XIV | [Network attacks and vulnerabilities: the catalogue](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p15) |
-| XV | [Databases on the network](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p16) |
-| XVI | [Tools in depth: what to run, and when](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p17) |
-| XVII | [How real client networks are built, and how you get in](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p18) |
-| XVIII | [Use cases and mini-scenarios](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p19) |
-| XIX | [Resources and further reading](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p20) |
+| IX | [Worked scenarios](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p9) |
+| X | [Desk reference](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p10) |
+| XI | [Lessons from the field](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p11) |
+| XII | [A first engagement, walked through](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p12) |
+| XIII | [Protocols in depth: the language of the wire](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p13) |
+| XIV | [Network attacks and vulnerabilities: the catalogue](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p14) |
+| XV | [Databases on the network](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p15) |
+| XVI | [Tools in depth: what to run, and when](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p16) |
+| XVII | [How real client networks are built, and how you get in](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p17) |
+| XVIII | [Use cases and mini-scenarios](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p18) |
+| XIX | [Resources and further reading](https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html#p19) |
 
 Grounded in **NIST SP 800-115, PTES, OWASP and MITRE ATT&CK**, with links to primary sources
 throughout.
+
+## The companion tool
+
+[PostureKit](https://github.com/abdullahzarshaid/posturekit) is the open-source implementation of the
+toolkit Part VII specifies: a PowerShell collector that reads 45 evidence sources from an authorised
+Windows host and seals them with SHA-256, a Python analyzer that evaluates 45 rules and the patch state
+against Microsoft's free vulnerability data, and importers for wireless, hardening-audit and
+network-scan planes. MIT licence, no paid dependencies, 102 automated tests.
 
 ## Scope and ethics
 

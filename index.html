@@ -1,11 +1,90 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Network Security Assessment Handbook — Abdullah Bin Zarshaid</title>
-<meta name="description" content="A practical security assessment reference covering networks, wireless, web, API, cloud and directory services.">
-<style>body{max-width:760px;margin:8vh auto;padding:24px;background:#0b1220;color:#e6edf3;font:18px/1.7 system-ui,sans-serif}h1{line-height:1.2}a{color:#59ddbe}.button{display:inline-block;padding:12px 20px;border:1px solid #59ddbe;border-radius:8px;margin:8px 12px 8px 0}small{color:#acbace}footer{margin-top:48px;border-top:1px solid #334155;padding-top:16px}</style>
-</head><body><p>ASSESS · UNDERSTAND · IMPROVE</p><h1>Network Security Assessment</h1>
-<h2>A Practitioner's Handbook</h2><p>By Abdullah Bin Zarshaid</p>
-<p>A practical reference across network, wireless, web, API, cloud and directory assessment. Explore the methodology, worked scenarios and protocol reference in 19 parts.</p>
-<a class="button" href="handbook.html">Read online →</a><a class="button" href="Network-Security-Assessment-Handbook.pdf">Download PDF</a>
-<p>Use only within an authorized assessment or isolated training environment. Adapt examples to your scope and verify tool behaviour before use.</p>
-<footer><a href="https://github.com/abdullahzarshaid/network-security-assessment-handbook">Source and corrections</a> · <a href="https://github.com/abdullahzarshaid">More security projects</a><br><small>Handbook text and figures: CC BY 4.0. See the repository license.</small></footer></body></html>
+<title>Network Security Assessment: A Practitioner's Handbook</title>
+<meta name="description" content="A free 138-page practitioner's handbook: networking fundamentals, assessment methodology, network, wireless, web, API, cloud and directory assessment, with an open-source host assessment toolkit.">
+<style>
+:root{--bg:#0b1220;--card:#121c2e;--ink:#e6edf3;--muted:#acbace;--acc:#59ddbe;--line:#26344a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:6vh 24px 48px}
+.eyebrow{letter-spacing:3px;font-size:12px;color:var(--acc);margin:0 0 10px}
+h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 6px}
+h2.sub{font-weight:400;color:var(--muted);font-size:clamp(18px,2.6vw,24px);margin:0 0 18px}
+p.lead{max-width:760px;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 10px}
+.button{display:inline-block;padding:13px 22px;border:1px solid var(--acc);border-radius:9px;color:var(--acc);text-decoration:none;font-weight:600}
+.button.primary{background:var(--acc);color:#07111a}
+.button:hover{filter:brightness(1.08)}
+.meta{color:var(--muted);font-size:14px;margin:6px 0 34px}
+h3{margin:34px 0 12px;font-size:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.card{display:block;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;color:var(--ink);text-decoration:none}
+.card:hover{border-color:var(--acc)}
+.card small{display:block;color:var(--acc);font-size:12px;letter-spacing:2px;margin-bottom:4px}
+.card span{color:var(--muted);font-size:14px;display:block;margin-top:4px}
+.tool{background:linear-gradient(135deg,#12233a,#0f2a2b);border:1px solid var(--acc);border-radius:12px;padding:18px 20px;margin-top:30px}
+.tool h3{margin:0 0 8px}
+.tool p{margin:0 0 10px;color:var(--muted)}
+ul.feat{columns:2;column-gap:28px;color:var(--muted);padding-left:20px;margin:8px 0 0}
+ul.feat li{margin:3px 0;break-inside:avoid}
+footer{margin-top:44px;border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:14px}
+footer a{color:var(--acc)}
+@media (max-width:640px){ul.feat{columns:1}}
+</style>
+</head><body><div class="wrap">
+<p class="eyebrow">ASSESS · UNDERSTAND · IMPROVE</p>
+<h1>Network Security Assessment</h1>
+<h2 class="sub">A Practitioner's Handbook</h2>
+<p class="lead">One training path from the fundamentals of networking to expert command of every assessment domain: network, wireless, web, API, cloud and directory. Methodology, tools, worked scenarios, a protocol and attack reference, and the complete specification of an open-source host assessment toolkit. Written so a competent engineer can be brought to operating standard from it alone.</p>
+<div class="btns">
+  <a class="button primary" href="handbook.html">Read online</a>
+  <a class="button" href="Network-Security-Assessment-Handbook.pdf">Download the PDF (138 pages)</a>
+  <a class="button" href="https://github.com/abdullahzarshaid/posturekit">The toolkit on GitHub</a>
+</div>
+<p class="meta">19 parts · grounded in NIST SP 800-115, PTES, OWASP and MITRE ATT&amp;CK · Creative Commons BY 4.0</p>
+
+<h3>The online edition</h3>
+<ul class="feat">
+  <li>Full-text search across every section (press <b>/</b>)</li>
+  <li>Collapsible contents panel that follows where you are</li>
+  <li>Click any diagram to enlarge it</li>
+  <li>Copy button on every command block</li>
+  <li>Previous and next links at the end of each part</li>
+  <li>Link to any section from its heading</li>
+  <li>Light and dark theme, reading progress bar</li>
+  <li>Keyboard: <b>[</b> and <b>]</b> move between parts, <b>t</b> switches theme</li>
+</ul>
+
+<h3>What's inside</h3>
+<div class="grid">
+  <a class="card" href="handbook.html#p1"><small>PART I</small>Foundations of networking<span>Devices, addressing, ports, how data moves, segmentation, IPv6 and DMZ design.</span></a>
+  <a class="card" href="handbook.html#p2"><small>PART II</small>Assessment, standards and the engagement lifecycle<span>Scan versus assessment versus pentest; NIST 800-115, PTES, OWASP; rules of engagement.</span></a>
+  <a class="card" href="handbook.html#p3"><small>PART III</small>Delivery architecture<span>Where you test from: on-site device, secure connectivity, evidence return.</span></a>
+  <a class="card" href="handbook.html#p4"><small>PART IV</small>Network penetration testing<span>Discovery, enumeration, services, Active Directory, segmentation, what to run and why.</span></a>
+  <a class="card" href="handbook.html#p5"><small>PART V</small>Wireless assessment<span>Three layers: on the computer, in the air, on the controller.</span></a>
+  <a class="card" href="handbook.html#p6"><small>PART VI</small>Web, API and cloud assessment<span>Application testing, APIs, cloud, mobile, containers and OT.</span></a>
+  <a class="card" href="handbook.html#p7"><small>PART VII</small>The host assessment toolkit: full specification<span>45 evidence sources, 45 rules, the patch engine, deployment, validation. Open source.</span></a>
+  <a class="card" href="handbook.html#p8"><small>PART VIII</small>Engagement management<span>Method, validation, deliverables, retests, compliance mapping, writing a finding.</span></a>
+  <a class="card" href="handbook.html#p9"><small>PART IX</small>Worked scenarios<span>Real-shaped engagements walked through end to end.</span></a>
+  <a class="card" href="handbook.html#p10"><small>PART X</small>Desk reference<span>The tables you reach for during an engagement.</span></a>
+  <a class="card" href="handbook.html#p11"><small>PART XI</small>Lessons from the field<span>Ten years of network testing, distilled.</span></a>
+  <a class="card" href="handbook.html#p12"><small>PART XII</small>A first engagement, walked through<span>What a junior should do on day one, in order.</span></a>
+  <a class="card" href="handbook.html#p13"><small>PART XIII</small>Protocols in depth<span>The language of the wire, Windows versus Linux.</span></a>
+  <a class="card" href="handbook.html#p14"><small>PART XIV</small>Network attacks and vulnerabilities<span>The catalogue, with the control each one tests.</span></a>
+  <a class="card" href="handbook.html#p15"><small>PART XV</small>Databases on the network<span>How database engines expose themselves and how to assess them.</span></a>
+  <a class="card" href="handbook.html#p16"><small>PART XVI</small>Tools in depth<span>What to run, and when.</span></a>
+  <a class="card" href="handbook.html#p17"><small>PART XVII</small>How real client networks are built<span>Enterprise and banking networks, and how you get access.</span></a>
+  <a class="card" href="handbook.html#p18"><small>PART XVIII</small>Use cases and mini-scenarios<span>Eighteen short situations and the right test for each.</span></a>
+  <a class="card" href="handbook.html#p19"><small>PART XIX</small>Resources and further reading<span>Verified primary sources, grouped by topic.</span></a>
+</div>
+
+<div class="tool">
+  <h3>The companion tool: PostureKit</h3>
+  <p>The host assessment toolkit specified in Part VII is published as open source (MIT). A PowerShell collector reads 45 evidence sources from an authorised Windows host and seals them with SHA-256; a Python analyzer evaluates 45 rules and the patch state against Microsoft's free vulnerability data; importers add wireless, hardening-audit and network-scan planes. It identifies, it never exploits, and it never assigns severity on its own.</p>
+  <a class="button" href="https://github.com/abdullahzarshaid/posturekit">PostureKit on GitHub</a>
+  &nbsp; <a class="button" href="handbook.html#p7">Read the specification (Part VII)</a>
+</div>
+
+<p style="margin-top:28px;color:var(--muted)">Use only within an authorised assessment or an isolated training environment. Adapt examples to your scope and verify tool behaviour before use.</p>
+<footer><a href="https://github.com/abdullahzarshaid/network-security-assessment-handbook">Source and corrections</a> · <a href="https://github.com/abdullahzarshaid">More security projects</a><br><small>Handbook text and figures: CC BY 4.0. See the repository licence.</small></footer>
+</div></body></html>

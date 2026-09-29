@@ -1826,10 +1826,11 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
 
     <!-- ============ PART VII ============ -->
     <div class="part" id="p7"><p class="pn">Part VII</p><h2>The host assessment toolkit - full specification</h2>
-      <p>The instrument itself, from design philosophy to protocol detail: the 41 evidence sources, the 37 rules, the patch engine, deployment, and validation status.</p></div>
+      <p>The instrument itself, from design philosophy to protocol detail: the 45 evidence sources, the 45 rules, the patch engine, deployment, and validation status.</p></div>
 
     <section id="s7-1"><p class="snum">7.1</p><h3>Product shape - one workflow, several planes</h3>
       <div class="plain"><b>In plain words</b><p>The toolkit is not one giant script - it is a small assembly line. One part <em>collects</em> evidence from a Windows machine, another <em>seals</em> it so it cannot be secretly changed, another <em>judges</em> it against rules, and a last part turns the results into a report. Splitting the jobs is deliberate: the part that collects can never influence the verdict, and that separation is what makes the findings trustworthy.</p></div>
+      <div class="callout"><p class="lab">The code is public</p><p>The reference implementation described in this Part is published as open source under the MIT licence: <a href="https://github.com/abdullahzarshaid/posturekit">PostureKit on GitHub</a>. It contains the same collector, launcher, sealed-batch model, analyzer, rule set and importers this Part specifies, plus a synthetic offline demonstration you can run without touching any host. Read the code alongside this Part; every section below names the file it describes.</p></div>
       <figure><div class="figwrap">
         <svg viewBox="0 0 920 220" role="img" aria-label="Three assessment planes - host, network and passive - all feeding one findings register in a single format">
           <defs><style>.bx{fill:var(--surface2);stroke:var(--rule2)}.st{fill:var(--accent-soft);stroke:var(--accent)}.t{font-family:var(--mono);fill:var(--ink)}.m{font-family:var(--mono);fill:var(--faint)}.lbl{font-family:var(--mono);fill:var(--accent);font-weight:600}.ln{stroke:var(--muted);fill:none;stroke-width:1.6}</style>
@@ -1877,7 +1878,7 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
           <text class="m" x="497" y="132" text-anchor="middle" font-size="9">off-host · applies rules</text>
           <path d="M572 108 H616" stroke="var(--accent)" stroke-width="1.5" fill="none" marker-end="url(#ar3)"/>
           <path d="M572 136 H616" stroke="var(--accent)" stroke-width="1.5" fill="none" marker-end="url(#ar3)"/>
-          <rect class="bx" x="620" y="80" width="150" height="34" rx="7"/><text class="t" x="695" y="101" text-anchor="middle" font-size="10">37 config rules</text>
+          <rect class="bx" x="620" y="80" width="150" height="34" rx="7"/><text class="t" x="695" y="101" text-anchor="middle" font-size="10">45 config rules</text>
           <rect class="bx" x="620" y="122" width="150" height="42" rx="7"/><text class="t" x="695" y="140" text-anchor="middle" font-size="10">Patch engine:</text><text class="m" x="695" y="154" text-anchor="middle" font-size="8.5">build+UBR vs MSRC/KEV</text>
           <path d="M770 122 H816" stroke="var(--accent)" stroke-width="1.5" fill="none" marker-end="url(#ar3)"/>
           <rect x="820" y="86" width="166" height="72" rx="9" fill="var(--accent-soft)" stroke="var(--accent)"/>
@@ -1901,21 +1902,22 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
       </ol>
       <p><strong>Collection profiles</strong> bound what is gathered: <strong>Minimal</strong> (identity + selected controls/listeners), <strong>Standard</strong> (+ bounded service/software/update inventory), <strong>Deep</strong> (+ targeted hardening/role evidence). Collection must be justified by an objective and constrained by per-host size budgets.</p></section>
 
-    <section id="s7-4"><p class="snum">7.4</p><h3>The 41 evidence sources</h3>
-      <div class="plain"><b>In plain words</b><p>A &ldquo;source&rdquo; is one category of evidence the tool reads - patch level, local accounts, firewall state, running services, and so on (41 in all). It records <em>facts</em>, not opinions, and only what is needed: for example it notes <em>whether</em> an auto-login password exists, never the password itself. How you read a setting matters more than it sounds - the tables below flag several Windows traps where the obvious command returns a wrong answer.</p></div>
+    <section id="s7-4"><p class="snum">7.4</p><h3>The 45 evidence sources</h3>
+      <div class="plain"><b>In plain words</b><p>A &ldquo;source&rdquo; is one category of evidence the tool reads - patch level, local accounts, firewall state, running services, and so on (45 in all). It records <em>facts</em>, not opinions, and only what is needed: for example it notes <em>whether</em> an auto-login password exists, never the password itself. How you read a setting matters more than it sounds - the tables below flag several Windows traps where the obvious command returns a wrong answer.</p></div>
       <figure><div class="figwrap">
-        <svg viewBox="0 0 920 236" role="img" aria-label="The 41 evidence sources grouped into six categories, all sealed together">
+        <svg viewBox="0 0 920 306" role="img" aria-label="The 45 evidence sources grouped into seven categories, all sealed together">
           <defs><style>.bx{fill:var(--surface2);stroke:var(--rule2)}.t{font-family:var(--mono);fill:var(--ink)}.m{font-family:var(--mono);fill:var(--faint)}.lbl{font-family:var(--mono);fill:var(--accent);font-weight:600}</style></defs>
-          <text class="lbl" x="20" y="24" font-size="13">THE 41 SOURCES - six kinds of evidence, all sealed together</text>
+          <text class="lbl" x="20" y="24" font-size="13">THE 45 SOURCES - seven kinds of evidence, all sealed together</text>
           <rect class="bx" x="20" y="40" width="285" height="62" rx="8"/><text class="t" x="34" y="62" font-size="11.5">Patch &amp; OS</text><text class="m" x="34" y="80" font-size="9.5">build, UBR, missing updates</text><text class="m" x="34" y="94" font-size="9.5">→ real vulnerabilities</text>
           <rect class="bx" x="317" y="40" width="285" height="62" rx="8"/><text class="t" x="331" y="62" font-size="11.5">Accounts &amp; identity</text><text class="m" x="331" y="80" font-size="9.5">local users, LAPS,</text><text class="m" x="331" y="94" font-size="9.5">privileged groups</text>
           <rect class="bx" x="614" y="40" width="286" height="62" rx="8"/><text class="t" x="628" y="62" font-size="11.5">Network &amp; services</text><text class="m" x="628" y="80" font-size="9.5">firewall, running services,</text><text class="m" x="628" y="94" font-size="9.5">listeners &amp; ports</text>
           <rect class="bx" x="20" y="110" width="285" height="62" rx="8"/><text class="t" x="34" y="132" font-size="11.5">Credentials &amp; LSA</text><text class="m" x="34" y="150" font-size="9.5">WDigest, PPL,</text><text class="m" x="34" y="164" font-size="9.5">cached-credential settings</text>
           <rect class="bx" x="317" y="110" width="285" height="62" rx="8"/><text class="t" x="331" y="132" font-size="11.5">Directory (AD)</text><text class="m" x="331" y="150" font-size="9.5">domain policy, Kerberos,</text><text class="m" x="331" y="164" font-size="9.5">trusts, GPO, privileged groups</text>
           <rect class="bx" x="614" y="110" width="286" height="62" rx="8"/><text class="t" x="628" y="132" font-size="11.5">Logging &amp; policy</text><text class="m" x="628" y="150" font-size="9.5">audit policy, lockout,</text><text class="m" x="628" y="164" font-size="9.5">PowerShell logging</text>
-          <rect x="20" y="188" width="880" height="34" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/><text class="t" x="460" y="210" text-anchor="middle" font-size="11.5">all 41 → sealed together with SHA-256 → tamper-evident evidence</text>
+          <rect class="bx" x="20" y="180" width="285" height="62" rx="8"/><text class="t" x="34" y="202" font-size="11.5">Wireless (host side)</text><text class="m" x="34" y="220" font-size="9.5">saved networks, cipher, auto-join,</text><text class="m" x="34" y="234" font-size="9.5">802.1X certificate validation, PMF</text>
+          <rect x="20" y="258" width="880" height="34" rx="8" fill="var(--accent-soft)" stroke="var(--accent)"/><text class="t" x="460" y="280" text-anchor="middle" font-size="11.5">all 45 → sealed together with SHA-256 → tamper-evident evidence</text>
         </svg>
-      </div><figcaption>The 41 sources are just six kinds of fact - patch state, accounts, network, credentials, directory, and logging. They read facts, not opinions, and all seal together so the evidence cannot be quietly changed.</figcaption></figure>
+      </div><figcaption>The 45 sources are seven kinds of fact - patch state, accounts, network, credentials, directory, logging, and the host's wireless configuration. They read facts, not opinions, and all seal together so the evidence cannot be quietly changed.</figcaption></figure>
       <p>Grouped with what each reveals. Each records a status and a plain caveat; only whether an auto-logon password <em>exists</em> is recorded - never the value.</p>
       <h5>Identity, inventory &amp; build</h5>
       <div class="tbl tight"><table><tbody>
@@ -1944,7 +1946,12 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
         <tr><td><code>domainidentity</code> · <code>domainpolicy</code></td><td>Identity + functional level; default password/lockout policy and <code>MachineAccountQuota</code>.</td></tr>
         <tr><td><code>domainprivilegedgroups</code> · <code>domaintrusts</code> · <code>kerberospolicy</code> · <code>gpoapplied</code></td><td>Privileged membership (by RID, a floor); trusts; Kerberos/secure-channel; applied GPOs.</td></tr>
       </tbody></table></div>
-      <p class="mono" style="font-size:12px;color:var(--muted)">The six directory sources read through libraries on every Windows host - no RSAT, no ActiveDirectory module. On a workgroup host all six record <em>Not Applicable</em>.</p></section>
+      <h5>Wireless configuration (host side, see Part V)</h5>
+      <div class="tbl tight"><table><tbody>
+        <tr><td><code>wirelessadapters</code> · <code>wirelessinterface</code></td><td>Whether a wireless adapter exists and, if connected, the current network's authentication, cipher and management-frame protection. A host with no adapter records the wireless rules as <em>Not Applicable</em>, never a false pass.</td></tr>
+        <tr><td><code>wirelessprofiles</code> · <code>wirelessposture</code></td><td>Every saved network profile (open, legacy WEP/WPA, TKIP, auto-join, pre-shared key or 802.1X, and whether an 802.1X profile validates the server certificate) and a one-row summary the eight WLAN rules evaluate. No pre-shared key is ever read or exported.</td></tr>
+      </tbody></table></div>
+      <p class="mono" style="font-size:12px;color:var(--muted)">The six directory sources read through libraries on every Windows host - no RSAT, no ActiveDirectory module. On a workgroup host all six record <em>Not Applicable</em>. The three domain-level sources (policy, privileged groups, Kerberos policy) are read once from the domain controller; a member host collected through a remote session records them as <em>Not Applicable</em> with the reason, because a remote session cannot bind the directory on the host's behalf (the credential second hop).</p></section>
 
     <section id="s7-5"><p class="snum">7.5</p><h3>Evidence integrity and result semantics</h3>
       <div class="field"><b>From the field - practitioner's note</b><p>A &ldquo;hash mismatch&rdquo; is not always tampering. On Windows, a file path longer than 260 characters makes the verifier report files as missing or invalid - which looks exactly like altered evidence. Always re-check from a short path (like <code>C:\r2\</code>) before you ever accuse a batch of being tampered with; the panic is nearly always a path-length problem, not an attacker.</p></div>
@@ -1973,9 +1980,9 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
       </tbody></table></div>
       <p>The coverage denominator comes from the <em>approved inventory</em>, not only hosts that returned evidence - so “zero findings” can never hide missing assets - and a CVE is never inferred from a missing KB, a port, or an unverified banner.</p></section>
 
-    <section id="s7-6"><p class="snum">7.6</p><h3>The analyzer and the 37 configuration rules</h3>
-      <div class="plain"><b>In plain words</b><p>The &ldquo;analyzer&rdquo; is the part that judges the collected evidence against 37 <em>rules</em> - each rule a single yes/no question like &ldquo;is SMB signing required?&rdquo; A rule can also say what a <em>missing</em> setting means, because sometimes absence is safe and sometimes it is the risk. Importantly, a failed rule is an <em>observation</em>, not yet a finding: a human still checks it against the client's own agreed baseline before it goes in a report.</p></div>
-      <p>37 rules across eight categories. It is a lab reference profile, explicitly not a certification: a <em>Fail</em> is a configuration observation requiring analyst review against the client’s approved baseline before it becomes a finding. Severity is never assigned by the rule set.</p>
+    <section id="s7-6"><p class="snum">7.6</p><h3>The analyzer and the 45 configuration rules</h3>
+      <div class="plain"><b>In plain words</b><p>The &ldquo;analyzer&rdquo; is the part that judges the collected evidence against 45 <em>rules</em> - each rule a single yes/no question like &ldquo;is SMB signing required?&rdquo; A rule can also say what a <em>missing</em> setting means, because sometimes absence is safe and sometimes it is the risk. Importantly, a failed rule is an <em>observation</em>, not yet a finding: a human still checks it against the client's own agreed baseline before it goes in a report.</p></div>
+      <p>45 rules across nine categories. It is a lab reference profile, explicitly not a certification: a <em>Fail</em> is a configuration observation requiring analyst review against the client’s approved baseline before it becomes a finding. Severity is never assigned by the rule set.</p>
       <div class="tbl tight"><table><thead><tr><th>Category</th><th>Rules</th><th>Representative check (800-53)</th></tr></thead><tbody>
         <tr><td>Firewall</td><td>FW01-03</td><td>Domain/Private/Public profile enabled (SC-7)</td></tr>
         <tr><td>SMB</td><td>SMB01-04</td><td>SMBv1 disabled; signing required (CM-7, SC-8/23)</td></tr>
@@ -1985,6 +1992,7 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
         <tr><td>Privilege escalation</td><td>PRIV01-02, PRN01-02</td><td>Installer-always-elevated; printer-driver install restriction (AC-6, CM-11)</td></tr>
         <tr><td>Audit logging</td><td>LOG01-03</td><td>PowerShell script-block/module logging (AU-2, AU-12)</td></tr>
         <tr><td>Account policy · media · patch · remote mgmt</td><td>PWD01-02, MEDIA01, UPD01-02, WRM01-02</td><td>Password length/lockout; AutoRun; update source https; WinRM no cleartext/basic (IA-5, AC-7, MP-7, SI-2, SC-8)</td></tr>
+        <tr><td>Wireless (host side)</td><td>WLAN01-08</td><td>No open network on auto-join; no legacy WEP/WPA or TKIP; 802.1X profiles validate the server certificate; corporate networks not on a shared key; management-frame protection on the connected link (AC-18)</td></tr>
       </tbody></table></div>
       <h4>Rule anatomy - a worked example</h4>
       <pre><code><span class="c">// CRED02 - LSA runs as a protected process</span>
@@ -2046,16 +2054,16 @@ control_refs: [ SC-39 Process Isolation, IA-5 Authenticator Mgmt ]</code></pre>
 
     <section id="s7-11"><p class="snum">7.11</p><h3>Capability and maturity</h3>
       <div class="field"><b>From the field - practitioner's note</b><p>Say plainly what you have validated and what you have not. &ldquo;Built and proven on Windows 11; not yet validated on Server 2016&rdquo; is a stronger, more credible line than a vague &ldquo;supports all platforms.&rdquo; Clients trust the tester who names the edge of their own knowledge - and distrust the one who claims there isn't one.</p></div>
-      <p>The toolkit is a <strong>complete pipeline</strong>: it collects 41 sealed evidence sources from a Windows host, evaluates 37 control-mapped configuration rules, determines outstanding Microsoft patches off-host against the free MSRC feed with CISA-KEV prioritisation, and drafts a findings register - all under the collect-vs-judge integrity model. What remains is <em>validation coverage</em> (proving it on more platforms and a live domain), not missing capability. A defensible programme states both plainly.</p>
-      <div class="tbl"><table><thead><tr><th>Validated today - real Windows 11 host, non-interactive</th><th>On the validation roadmap</th></tr></thead><tbody>
-        <tr><td>All 41 sources return, host Complete, batch sealed, manifest verifies</td><td>Windows 10, Server 2019, Server 2016 - exercise on each</td></tr>
-        <tr><td>37 rules evaluate; hundreds of scored missing updates found on an out-of-date host</td><td>The six directory sources against a real domain (workgroup proven)</td></tr>
-        <tr><td>Tamper-proofing works - a modified sealed file makes the analyzer refuse and exit non-zero</td><td>A credential-refused target; a central multi-host run</td></tr>
-        <tr><td>Unreachable target records Error with the provider message, never a false “secure”</td><td>Offline update scan; Nmap import against real output</td></tr>
-        <tr><td>Non-elevated collection returns the full workstation set; 74/74 automated tests pass</td><td>A non-English host; elevated collection on a server OS</td></tr>
+      <p>The toolkit is a <strong>complete pipeline</strong>: it collects 45 sealed evidence sources from a Windows host, evaluates 45 control-mapped configuration rules, determines outstanding Microsoft patches off-host against the free MSRC feed with CISA-KEV prioritisation, and drafts a findings register - all under the collect-vs-judge integrity model. The host side has now been validated end to end in a six-machine virtual lab; what remains is field coverage for the planes that need equipment or a real client environment. A defensible programme states both plainly.</p>
+      <div class="tbl"><table><thead><tr><th>Validated - six-machine virtual lab: Windows 10, Windows 11, Server 2016, 2019, 2022 and a domain controller</th><th>Still to prove in the field</th></tr></thead><tbody>
+        <tr><td>All 45 sources return on every platform; batches sealed; manifests verify; a modified sealed file makes the analyzer refuse the batch</td><td>Over-the-air wireless capture (needs a monitor-mode adapter and a person in radio range)</td></tr>
+        <tr><td>Central collection over WinRM with Kerberos from one admin host to four servers in a single run; a host on another subnet recorded honestly as unreachable and collected locally</td><td>Wireless-controller configuration review against a real controller export</td></tr>
+        <tr><td>The six directory sources against a real domain controller: privileged groups with members, domain password policy, Kerberos ticket policy from SYSVOL, trusts, applied GPOs</td><td>A live network vulnerability scan imported from Greenbone against a real segment</td></tr>
+        <tr><td>Credential-refused and unreachable targets record Error with the provider message and zero test rows; segmentation before-and-after on one port, with liveness corroborated</td><td>A non-English host (the local policy and wireless parsers assume English labels)</td></tr>
+        <tr><td>Offline update scan against the signed Microsoft catalogue; hardening-audit import; several sealed batches consolidated into one report; 102 automated tests pass</td><td>Estate scale: the launcher runs 1 to 20 hosts sequentially; a client fleet-management adapter is the next build</td></tr>
       </tbody></table></div>
-      <p>Two defects that appear only under non-interactive invocation (script-relative defaults in <code>param()</code>; strict-mode failure when the network block is absent) were found and fixed, along with product-matching, evaluation-window, LAPS and credential-caching corrections. It is an internal R&amp;D build; production sign-off follows the gates in §7.12. <strong>Once the roadmap items are exercised, the Windows capability is proven end to end.</strong></p>
-      <div class="mem"><b>Remember - the honest line</b><p>The tool <em>has</em> the capability; the roadmap is about <em>proving</em> it on more platforms and a live domain. Capability built ≠ every platform yet validated - say both, never just “not done.”</p></div></section>
+      <p>The lab exposed thirteen defects, every one caught by the evidence rather than by a client: two under non-interactive invocation (script-relative defaults in <code>param()</code>; strict-mode failure when the network block is absent), the patch engine's product matching and release ordering, an empty build number on older servers, directory reads through a remote session, an empty privileged-group list, wireless wrongly reported present on servers, and a segmentation result that could only ever be inconclusive. All are fixed and covered by tests. It is an internal R&amp;D build; production sign-off follows the gates in §7.12. <strong>The Windows capability is proven end to end in the lab; the remaining items need equipment or a client environment, not code.</strong></p>
+      <div class="mem"><b>Remember - the honest line</b><p>Capability proven in a lab is not the same as capability proven at a client. Say exactly which platforms and which planes have evidence behind them, and name the ones that still need equipment or a real environment - never just “done.”</p></div></section>
 
     <section id="s7-12"><p class="snum">7.12</p><h3>Production and licensing gates</h3>
       <div class="field"><b>From the field - practitioner's note</b><p>The code-signing certificate is not optional paperwork - without it, a mature client's application-control (WDAC/AppLocker) simply refuses to run the tool, and you get nothing. Budget the small annual cost before the engagement, not on the client's floor when the collector won't launch.</p></div>
@@ -2143,7 +2151,7 @@ control_refs: [ SC-39 Process Isolation, IA-5 Authenticator Mgmt ]</code></pre>
     </section>
 
     <!-- ============ PART X · SCENARIOS ============ -->
-    <div class="part" id="p10"><p class="pn">Part IX</p><h2>Worked scenarios</h2>
+    <div class="part" id="p9"><p class="pn">Part IX</p><h2>Worked scenarios</h2>
       <p>Five anonymised engagements that show the method end to end. No real client is named; these are representative composites for teaching, and any specifics stay confidential.</p></div>
 
     <section id="sc-1"><p class="snum">9.1</p><h3>External web + API - a multi-role SaaS portal</h3>
@@ -2202,7 +2210,7 @@ control_refs: [ SC-39 Process Isolation, IA-5 Authenticator Mgmt ]</code></pre>
     </section>
 
     <!-- ============ PART XI ============ -->
-    <div class="part" id="p11"><p class="pn">Part X</p><h2>Desk reference</h2><p>Quick-lookup material to keep open during an engagement.</p></div>
+    <div class="part" id="p10"><p class="pn">Part X</p><h2>Desk reference</h2><p>Quick-lookup material to keep open during an engagement.</p></div>
 
     <section id="s9-1"><p class="snum">10.1</p><h3>Ports and protocols</h3>
       <div class="tbl tight"><table><thead><tr><th>Port</th><th>Protocol</th><th>Notes</th></tr></thead><tbody>
@@ -2383,7 +2391,7 @@ ldapsearch <span class="k">-x -H</span> ldap://10.10.10.10 <span class="k">-s</s
       <div class="mem"><b>The through-line</b><p>Notice the shape: gather broadly, narrow to what is real, let a human confirm and score it, explain it in the client's language, and prove the fix. Every tool and technique in this handbook hangs off one of these eight steps.</p></div></section>
 
     <!-- ============ PART XII ============ -->
-    <div class="part" id="p12"><p class="pn">Part XI</p><h2>Lessons from the field - ten years of network testing</h2>
+    <div class="part" id="p11"><p class="pn">Part XI</p><h2>Lessons from the field - ten years of network testing</h2>
       <p>Everything before this Part is method and fact. This Part is judgement - the things experience teaches that no checklist can. Read it once now, and again after your first few real engagements; it will read very differently the second time. None of it is optional: most engagements are won or lost on these habits, not on tool skill.</p></div>
 
     <section id="lf-1"><p class="snum">11.1</p><h3>Scoping without regret</h3>
@@ -2455,7 +2463,7 @@ ldapsearch <span class="k">-x -H</span> ldap://10.10.10.10 <span class="k">-s</s
       <div class="mem"><b>The one that never expires</b><p>The field changes every year - new tools, new attacks, new clouds. The fundamentals in Part I do not. When something new confuses you, it almost always reduces to a basic you already know: an address, a port, a login, a trust. Go back to the base and it gets simple again.</p></div></section>
 
     <!-- ============ PART XIII ============ -->
-    <div class="part" id="p13"><p class="pn">Part XII</p><h2>A first engagement, walked through</h2>
+    <div class="part" id="p12"><p class="pn">Part XII</p><h2>A first engagement, walked through</h2>
       <p>The whole handbook in one week. This is a narrated walk through a small internal network assessment - nothing invented that you haven't already met in the earlier Parts. Watch how little of it is clever exploitation and how much is scoping, reading the network, checking boring settings, and explaining risk in the client's language. Section references point back to where each step is taught.</p></div>
 
     <section id="w-1"><p class="snum">12.1</p><h3>The setup - the scope call</h3>
@@ -2482,7 +2490,7 @@ ldapsearch <span class="k">-x -H</span> ldap://10.10.10.10 <span class="k">-s</s
       <div class="mem"><b>Where to go next</b><p>Re-read Part&nbsp;I until the fundamentals are automatic, build the lab in §11.9, and run this same walk on your own test network. When a new tool or attack appears, trace it back to the basics here - it is always an address, a port, a login, or a trust.</p></div></section>
 
     <!-- ============ PART XIV ============ -->
-    <div class="part" id="p14"><p class="pn">Part XIII</p><h2>Protocols in depth: the language of the wire</h2>
+    <div class="part" id="p13"><p class="pn">Part XIII</p><h2>Protocols in depth: the language of the wire</h2>
       <p>Part&nbsp;I introduced the protocols you meet. This part is the reference that makes you fluent: every protocol an assessor touches, explained in plain words, with how it works, the port it lives on, how attackers abuse it, and exactly what you check. Learn a protocol properly once and you never have to look it up mid-engagement again. Each entry links to its authoritative specification so you can go as deep as you like.</p></div>
 
     <section id="pr-1"><p class="snum">13.1</p><h3>How to read any protocol</h3>
@@ -2660,7 +2668,7 @@ ldapsearch <span class="k">-x -H</span> ldap://10.10.10.10 <span class="k">-s</s
       <div class="mem"><b>Memory hook</b><p>Read the card top to bottom once before every engagement. The red &ldquo;No&rdquo; rows are where the easy, defensible findings almost always are.</p></div></section>
 
     <!-- ============ PART XV ============ -->
-    <div class="part" id="p15"><p class="pn">Part XIV</p><h2>Network attacks and vulnerabilities: the catalogue</h2>
+    <div class="part" id="p14"><p class="pn">Part XIV</p><h2>Network attacks and vulnerabilities: the catalogue</h2>
       <p>This is the field guide to how networks are actually attacked, grouped so the patterns stick. For each attack you get what it is, how it works, and the control that stops it, because our job is to <em>verify that control</em>, not to run the attack. Keep the standing rule in view: this assessment identifies and validates weaknesses (NIST SP 800-115 §3.4 and §4.3); exploitation (§5) needs separate written authorisation. You learn the attack so you understand exactly what you are checking and why it matters. The living references are <a href="https://attack.mitre.org/matrices/enterprise/">MITRE ATT&amp;CK</a> and <a href="https://book.hacktricks.wiki/">HackTricks</a>.</p></div>
 
     <section id="na-1"><p class="snum">14.1</p><h3>How to think about attacks</h3>
@@ -2794,7 +2802,7 @@ ldapsearch <span class="k">-x -H</span> ldap://10.10.10.10 <span class="k">-s</s
       <div class="mem"><b>Memory hook</b><p>Notice that most controls are configuration, not products: disable a fallback, require a signature, change a default, move a VLAN. That is the good news you carry to the client, and the reason a network assessment is worth so much: most of what it finds is fixable this week, for free.</p></div></section>
 
     <!-- ============ PART XVI ============ -->
-    <div class="part" id="p16"><p class="pn">Part XV</p><h2>Databases on the network</h2>
+    <div class="part" id="p15"><p class="pn">Part XV</p><h2>Databases on the network</h2>
       <p>Databases hold the thing the whole engagement is really about: the data. They are also, with dispiriting regularity, the easiest serious finding on an internal network, because a database that should only ever hear from one application server is instead answering the entire subnet, often with no password at all. This part is how to recognise them, where they belong, and what to check.</p></div>
 
     <section id="db-1"><p class="snum">15.1</p><h3>Where a database belongs</h3>
@@ -2852,7 +2860,7 @@ ldapsearch <span class="k">-x -H</span> ldap://10.10.10.10 <span class="k">-s</s
       <div class="field"><b>From the field</b><p>You rarely need to touch the data to write the finding. &ldquo;Your customer database on 10.4.2.9:27017 accepts connections from the staff Wi-Fi with no password&rdquo; is complete, provable from a single connection banner, and impossible to argue with. Prove reachability and the absent control; never dump or alter the records. That restraint is exactly what keeps the client trusting you.</p></div></section>
 
     <!-- ============ PART XVII ============ -->
-    <div class="part" id="p17"><p class="pn">Part XVI</p><h2>Tools in depth: what to run, and when</h2>
+    <div class="part" id="p16"><p class="pn">Part XVI</p><h2>Tools in depth: what to run, and when</h2>
       <p>Tools do not make an assessor; understanding does. But the right tool, driven by someone who knows what its output means, is how understanding turns into evidence. This part covers the tools a network assessor reaches for most, what each is for, one safe example, and the official home for each so you always download from source. Everything here is used for discovery, enumeration and verification. The exploitation frameworks are named for awareness only; running them is penetration-test scope with separate authorisation (§14.5).</p></div>
 
     <section id="tl-1"><p class="snum">16.1</p><h3>How to think about tooling</h3>
@@ -2943,7 +2951,7 @@ tcpdump -i eth0 -w capture.pcap
       <div class="mem"><b>Memory hook</b><p>The tool is never the finding. &ldquo;Nmap found port 445&rdquo; is not a finding; &ldquo;SMB signing is not required, so captured credentials can be relayed to this host&rdquo; is. The tool gathers evidence; <em>you</em> write the finding.</p></div></section>
 
     <!-- ============ PART XVIII ============ -->
-    <div class="part" id="p18"><p class="pn">Part XVII</p><h2>How real client networks are built, and how you get in</h2>
+    <div class="part" id="p17"><p class="pn">Part XVII</p><h2>How real client networks are built, and how you get in</h2>
       <p>Everything so far has been the how. This part is the where: what a real corporate or banking network actually looks like, why it is shaped that way, and the practical business of getting a tester into it, over the internet, down a VPN, or sitting in the client's office. When you can picture the client's network before you arrive, you scope better, test faster, and speak their language in the debrief. Everything here is generic and standards-based; no real client's design is shown.</p></div>
 
     <section id="rn-1"><p class="snum">17.1</p><h3>The zone model of an enterprise network</h3>
@@ -3062,7 +3070,7 @@ tcpdump -i eth0 -w capture.pcap
       <div class="field"><b>From the field</b><p>Clients remember two things: that you found what mattered, and that you were easy and safe to have on site. Turn up on time, keep them informed, never touch out-of-scope systems, and leave nothing behind. The testing skill gets you the first engagement; the professionalism gets you the next five.</p></div></section>
 
     <!-- ============ PART XIX ============ -->
-    <div class="part" id="p19"><p class="pn">Part XVIII</p><h2>Use cases and mini-scenarios</h2>
+    <div class="part" id="p18"><p class="pn">Part XVIII</p><h2>Use cases and mini-scenarios</h2>
       <p>Part&nbsp;IX walks five engagements end to end. This part is different: eighteen short cases, the kind you meet weekly, each in three lines, <em>what you see</em>, <em>what you do</em>, and <em>what you learn</em>. Read them until the pattern is reflex. Together they are a rehearsal of the whole handbook against real situations, so that when one appears on a live engagement, you have already seen it here.</p></div>
 
     <section id="uc-1"><p class="snum">18.1</p><h3>Discovery and recon</h3>
@@ -3097,7 +3105,7 @@ tcpdump -i eth0 -w capture.pcap
       <div class="mem"><b>The pattern behind all eighteen</b><p>Almost none of these needed an exploit. They needed you to notice a default, a cleartext protocol, a missing signature, an open door, or an unverified claim, and then to prove it cleanly and explain it plainly. That is the whole craft, and it is why theoretical mastery, not tool collecting, is what this handbook builds.</p></div></section>
 
     <!-- ============ PART XX ============ -->
-    <div class="part" id="p20"><p class="pn">Part XIX</p><h2>Resources and further reading</h2>
+    <div class="part" id="p19"><p class="pn">Part XIX</p><h2>Resources and further reading</h2>
       <p>Every link here was checked and is current. When you want to go deeper than this handbook, start from these primary sources, not from a search engine. They are grouped so you can find the right one fast, and each is the authoritative home for its topic. Bookmark this page.</p></div>
 
     <section id="rs-1"><p class="snum">19.1</p><h3>Standards and methodology</h3>
@@ -3146,6 +3154,7 @@ tcpdump -i eth0 -w capture.pcap
     <section id="rs-5"><p class="snum">19.5</p><h3>Tool homepages</h3>
       <p>Always download from the official source. Full treatment is in Part&nbsp;XVI.</p>
       <div class="tbl tight"><table><thead><tr><th>Tool</th><th>Home</th><th>Tool</th><th>Home</th></tr></thead><tbody>
+        <tr><td><a href="https://github.com/abdullahzarshaid/posturekit">PostureKit</a></td><td>The open-source host assessment toolkit specified in Part VII: collector, sealed evidence, analyzer, rule set and importers (MIT).</td></tr>
         <tr><td>Nmap</td><td><a href="https://nmap.org">nmap.org</a></td><td>BloodHound</td><td><a href="https://github.com/SpecterOps/BloodHound">SpecterOps</a></td></tr>
         <tr><td>Wireshark</td><td><a href="https://www.wireshark.org">wireshark.org</a></td><td>Hashcat</td><td><a href="https://hashcat.net/hashcat/">hashcat.net</a></td></tr>
         <tr><td>tcpdump</td><td><a href="https://www.tcpdump.org">tcpdump.org</a></td><td>John the Ripper</td><td><a href="https://www.openwall.com/john/">openwall.com</a></td></tr>
@@ -3194,6 +3203,137 @@ tcpdump -i eth0 -w capture.pcap
   b.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";
     r.setAttribute("data-theme",n); try{localStorage.setItem(KEY,n);}catch(e){}});
   var p=document.getElementById("print"); if(p) p.addEventListener("click",function(){window.print();});
+})();
+</script>
+
+<!-- INTERACTIVE LAYER (search, progress, anchors, copy, lightbox, prev/next, keyboard) -->
+<style id="hb-ix-css">
+.hb-progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--accent);z-index:60;transition:width .15s}
+.hb-search{margin:6px 0 10px;position:relative}
+.hb-search input{width:100%;padding:8px 10px 8px 30px;border:1px solid var(--rule2);border-radius:8px;background:var(--surface);color:var(--ink);font:13px var(--sans)}
+.hb-search input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.hb-search .hb-ico{position:absolute;left:9px;top:9px;color:var(--faint);font-size:13px;pointer-events:none}
+.hb-results{display:none;max-height:46vh;overflow:auto;border:1px solid var(--rule2);border-radius:8px;background:var(--surface);margin-top:6px}
+.hb-results.on{display:block}
+.hb-results a{display:block;padding:7px 10px;border-bottom:1px solid var(--rule);text-decoration:none;color:var(--ink);font-size:12.5px;line-height:1.35}
+.hb-results a:hover,.hb-results a.sel{background:var(--accent-soft)}
+.hb-results a b{color:var(--accent);font-weight:600}
+.hb-results .hb-none{padding:8px 10px;color:var(--faint);font-size:12.5px}
+.hb-results mark{background:color-mix(in srgb,var(--accent) 22%,transparent);color:inherit;padding:0 1px;border-radius:2px}
+.side nav .grp{cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between}
+.side nav .grp::after{content:"▾";font-size:11px;color:var(--faint);transition:transform .15s}
+.side nav .grp.closed::after{transform:rotate(-90deg)}
+.side nav a.hb-hide{display:none}
+.side nav a.hb-active{color:var(--accent);font-weight:600;border-left:2px solid var(--accent);padding-left:8px}
+.hb-tools{display:flex;gap:6px;margin:0 0 8px;flex-wrap:wrap}
+.hb-tools button{font:11.5px var(--sans);padding:3px 8px;border:1px solid var(--rule2);border-radius:6px;background:var(--surface);color:var(--muted);cursor:pointer}
+.hb-tools button:hover{color:var(--accent);border-color:var(--accent)}
+.hb-anchor{opacity:0;margin-left:8px;font-size:.75em;text-decoration:none;color:var(--faint)}
+h2:hover .hb-anchor,h3:hover .hb-anchor{opacity:1}
+.hb-anchor:hover{color:var(--accent)}
+pre{position:relative}
+.hb-copy{position:absolute;top:6px;right:6px;font:11px var(--sans);padding:3px 8px;border:1px solid var(--rule2);border-radius:6px;background:var(--surface);color:var(--muted);cursor:pointer;opacity:.85}
+.hb-copy:hover{color:var(--accent);border-color:var(--accent);opacity:1}
+.figwrap{cursor:zoom-in}
+.hb-lb{position:fixed;inset:0;background:rgba(10,14,16,.86);z-index:80;display:none;align-items:center;justify-content:center;padding:3vh 3vw;cursor:zoom-out}
+.hb-lb.on{display:flex}
+.hb-lb .hb-lbin{background:var(--surface);border-radius:10px;padding:16px;max-width:96vw;max-height:94vh;overflow:auto;box-shadow:var(--shadow);cursor:default}
+.hb-lb svg{width:min(92vw,1400px);height:auto}
+.hb-lb .hb-cap{color:var(--muted);font:13px var(--sans);margin-top:8px}
+.hb-pn{display:flex;justify-content:space-between;gap:12px;margin:34px 0 8px;padding-top:14px;border-top:1px solid var(--rule)}
+.hb-pn a{flex:1;text-decoration:none;color:var(--ink);border:1px solid var(--rule2);border-radius:10px;padding:10px 14px;background:var(--surface)}
+.hb-pn a:hover{border-color:var(--accent)}
+.hb-pn small{display:block;color:var(--faint);font:11px var(--sans);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}
+.hb-pn .hb-next{text-align:right}
+.hb-top{position:fixed;right:18px;bottom:18px;z-index:50;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule2);background:var(--surface);color:var(--accent);font-size:18px;cursor:pointer;box-shadow:var(--shadow);display:none}
+.hb-top.on{display:block}
+.hb-kbd{position:fixed;left:18px;bottom:18px;z-index:50;font:11px var(--sans);color:var(--faint);background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:4px 8px;display:none}
+@media (min-width:1100px){.hb-kbd{display:block}}
+.hb-kbd kbd{font:11px var(--mono);border:1px solid var(--rule2);border-radius:4px;padding:0 4px;color:var(--muted)}
+@media print{.hb-progress,.hb-search,.hb-results,.hb-tools,.hb-anchor,.hb-copy,.hb-lb,.hb-pn,.hb-top,.hb-kbd{display:none!important}.figwrap{cursor:auto}}
+</style>
+<div class="hb-progress" id="hbProgress"></div>
+<button class="hb-top" id="hbTop" title="Back to top" aria-label="Back to top">↑</button>
+<div class="hb-kbd"><kbd>/</kbd> search &nbsp; <kbd>[</kbd> <kbd>]</kbd> previous / next part &nbsp; <kbd>t</kbd> theme &nbsp; <kbd>Esc</kbd> close</div>
+<div class="hb-lb" id="hbLb"><div class="hb-lbin" id="hbLbIn"></div></div>
+<script id="hb-ix-js">
+(function(){
+  var $=function(s,c){return (c||document).querySelector(s)}, $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+  var nav=$('.side nav'); if(!nav) return;
+  var parts=$$('.part'); var sections=$$('section[id]');
+  /* ---- part meta: number label + title, and the sections belonging to each part ---- */
+  var partMeta=parts.map(function(p,i){
+    var nxt=parts[i+1]; var secs=[]; var el=p.nextElementSibling;
+    while(el && el!==nxt){ if(el.tagName==='SECTION' && el.id) secs.push(el); el=el.nextElementSibling; }
+    return {el:p,id:p.id,label:(($('.pn',p)||{}).textContent||'').trim(),title:(($('h2',p)||{}).textContent||'').trim(),secs:secs};
+  });
+  /* ---- 1. contents: collapsible groups, active highlight ---- */
+  var groups=[]; var cur=null;
+  $$('.grp',nav).forEach(function(g){ cur={grp:g,links:[]}; groups.push(cur); });
+  cur=null; Array.prototype.forEach.call(nav.children,function(n){ if(n.classList&&n.classList.contains('grp')){cur=groups.filter(function(x){return x.grp===n})[0];} else if(n.tagName==='A'&&cur){cur.links.push(n);} });
+  function setGroup(g,open){ g.grp.classList.toggle('closed',!open); g.links.forEach(function(a){a.classList.toggle('hb-hide',!open)}); }
+  groups.forEach(function(g){ g.grp.addEventListener('click',function(){ setGroup(g,g.grp.classList.contains('closed')); }); });
+  var tools=document.createElement('div'); tools.className='hb-tools';
+  tools.innerHTML='<button type="button" data-x="1">Expand all</button><button type="button" data-x="0">Collapse all</button>';
+  tools.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; var open=b.getAttribute('data-x')==='1'; groups.forEach(function(g){setGroup(g,open)}); });
+  var linkById={}; $$('a[href^="#"]',nav).forEach(function(a){ linkById[a.getAttribute('href').slice(1)]=a; });
+  var active=null;
+  function markActive(id){ if(!id||!linkById[id]) return; if(active) active.classList.remove('hb-active'); active=linkById[id]; active.classList.add('hb-active');
+    groups.forEach(function(g){ if(g.links.indexOf(active)>=0 && g.grp.classList.contains('closed')) setGroup(g,true); });
+    var r=active.getBoundingClientRect(), nr=nav.getBoundingClientRect(); if(r.top<nr.top||r.bottom>nr.bottom) active.scrollIntoView({block:'nearest'}); }
+  if('IntersectionObserver' in window){
+    var seen={}; var io=new IntersectionObserver(function(es){ es.forEach(function(e){ seen[e.target.id]=e.isIntersecting; });
+      var first=sections.filter(function(s){return seen[s.id]})[0]; if(first) markActive(first.id); },{rootMargin:'-10% 0px -70% 0px',threshold:0});
+    sections.forEach(function(s){io.observe(s)});
+  }
+  /* ---- 2. search ---- */
+  var box=document.createElement('div'); box.className='hb-search';
+  box.innerHTML='<span class="hb-ico">&#128269;</span><input type="search" id="hbQ" placeholder="Search the handbook (press /)" autocomplete="off" aria-label="Search"><div class="hb-results" id="hbR" role="listbox"></div>';
+  nav.parentNode.insertBefore(tools,nav); nav.parentNode.insertBefore(box,tools);
+  var index=[];
+  partMeta.forEach(function(pm){ pm.secs.forEach(function(s){ var h=$('h3',s); var num=(($('.snum',s)||{}).textContent||'').trim();
+    var text=s.textContent.replace(/\s+/g,' ').trim(); index.push({id:s.id,num:num,title:h?h.textContent.trim():s.id,part:pm.label,text:text,low:text.toLowerCase(),tlow:(h?h.textContent:'').toLowerCase()}); }); });
+  var q=$('#hbQ'), R=$('#hbR'); var sel=-1;
+  function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function snippet(text,low,term){ var i=low.indexOf(term); if(i<0) return esc(text.slice(0,140))+'…'; var a=Math.max(0,i-70), b=Math.min(text.length,i+term.length+90);
+    var s=text.slice(a,b); var re=new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'ig'); return (a>0?'…':'')+esc(s).replace(re,function(m){return '<mark>'+m+'</mark>'})+(b<text.length?'…':''); }
+  function search(){ var term=q.value.trim().toLowerCase(); sel=-1; if(term.length<2){R.classList.remove('on');R.innerHTML='';return;}
+    var hits=[]; index.forEach(function(e){ var score=0; if(e.tlow.indexOf(term)>=0) score+=10; var c=e.low.split(term).length-1; if(c>0) score+=Math.min(c,8); if(score>0) hits.push([score,e]); });
+    hits.sort(function(a,b){return b[0]-a[0]}); hits=hits.slice(0,30);
+    R.innerHTML=hits.length? hits.map(function(h){var e=h[1]; return '<a href="#'+e.id+'"><b>'+esc(e.num+' '+e.title)+'</b> <span style="color:var(--faint)">· '+esc(e.part)+'</span><br>'+snippet(e.text,e.low,term)+'</a>'}).join('') : '<div class="hb-none">No matches. Try a shorter word.</div>';
+    R.classList.add('on'); }
+  q.addEventListener('input',search);
+  q.addEventListener('keydown',function(e){ var items=$$('a',R); if(e.key==='ArrowDown'){sel=Math.min(items.length-1,sel+1);} else if(e.key==='ArrowUp'){sel=Math.max(0,sel-1);} else if(e.key==='Enter'){ if(items[sel]) items[sel].click(); return;} else if(e.key==='Escape'){q.value='';search();q.blur();return;} else return;
+    e.preventDefault(); items.forEach(function(a,i){a.classList.toggle('sel',i===sel)}); if(items[sel]) items[sel].scrollIntoView({block:'nearest'}); });
+  R.addEventListener('click',function(){ R.classList.remove('on'); });
+  /* ---- 3. heading anchors ---- */
+  function addAnchor(h,id){ var a=document.createElement('a'); a.className='hb-anchor'; a.href='#'+id; a.title='Link to this section'; a.textContent='#';
+    a.addEventListener('click',function(e){ e.preventDefault(); history.replaceState(null,'','#'+id); var u=location.href.split('#')[0]+'#'+id; if(navigator.clipboard) navigator.clipboard.writeText(u).then(function(){a.textContent='copied'; setTimeout(function(){a.textContent='#'},1200)}); }); h.appendChild(a); }
+  partMeta.forEach(function(pm){ var h2=$('h2',pm.el); if(h2) addAnchor(h2,pm.id); pm.secs.forEach(function(s){ var h3=$('h3',s); if(h3) addAnchor(h3,s.id); }); });
+  /* ---- 4. copy buttons on code blocks ---- */
+  $$('pre').forEach(function(pre){ var b=document.createElement('button'); b.className='hb-copy'; b.type='button'; b.textContent='Copy';
+    b.addEventListener('click',function(){ var t=pre.innerText.replace(/^Copy\n?/,''); (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)},function(){b.textContent='Select and copy'}); }); pre.appendChild(b); });
+  /* ---- 5. diagram lightbox ---- */
+  var lb=$('#hbLb'), lbin=$('#hbLbIn');
+  $$('.figwrap').forEach(function(f){ var svg=$('svg',f); if(!svg) return; f.title='Click to enlarge';
+    f.addEventListener('click',function(){ var cap=f.parentNode.querySelector('figcaption'); lbin.innerHTML=''; var c=svg.cloneNode(true); c.removeAttribute('width'); c.removeAttribute('height'); lbin.appendChild(c);
+      if(cap){var d=document.createElement('div'); d.className='hb-cap'; d.textContent=cap.textContent; lbin.appendChild(d);} lb.classList.add('on'); }); });
+  lb.addEventListener('click',function(e){ if(e.target===lb) lb.classList.remove('on'); });
+  /* ---- 6. previous / next part ---- */
+  partMeta.forEach(function(pm,i){ var prev=partMeta[i-1], next=partMeta[i+1]; var last=pm.secs.length?pm.secs[pm.secs.length-1]:pm.el;
+    var d=document.createElement('div'); d.className='hb-pn';
+    d.innerHTML=(prev?'<a href="#'+prev.id+'"><small>Previous</small>'+esc(prev.label+' · '+prev.title)+'</a>':'<span style="flex:1"></span>')+(next?'<a class="hb-next" href="#'+next.id+'"><small>Next</small>'+esc(next.label+' · '+next.title)+'</a>':'<a class="hb-next" href="#"><small>End</small>Back to the start</a>');
+    last.parentNode.insertBefore(d,last.nextSibling); });
+  /* ---- 7. progress + back to top ---- */
+  var prog=$('#hbProgress'), top=$('#hbTop');
+  function onScroll(){ var h=document.documentElement; var max=h.scrollHeight-h.clientHeight; var p=max>0?(h.scrollTop/max)*100:0; prog.style.width=p+'%'; top.classList.toggle('on',h.scrollTop>600); }
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  top.addEventListener('click',function(){ window.scrollTo({top:0,behavior:'smooth'}); });
+  /* ---- 8. keyboard ---- */
+  function curPart(){ var y=window.scrollY+120; var c=0; partMeta.forEach(function(pm,i){ if(pm.el.offsetTop<=y) c=i; }); return c; }
+  document.addEventListener('keydown',function(e){ var tag=(e.target.tagName||'').toLowerCase(); if(tag==='input'||tag==='textarea'||e.ctrlKey||e.metaKey||e.altKey) return;
+    if(e.key==='/'){ e.preventDefault(); q.focus(); q.select(); } else if(e.key==='t'){ var b=$('#tbtn'); if(b) b.click(); } else if(e.key==='Escape'){ lb.classList.remove('on'); }
+    else if(e.key===']'){ var n=partMeta[curPart()+1]; if(n) location.hash='#'+n.id; } else if(e.key==='['){ var p=partMeta[Math.max(0,curPart()-1)]; if(p) location.hash='#'+p.id; } });
 })();
 </script>
 
