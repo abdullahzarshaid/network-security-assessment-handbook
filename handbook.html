@@ -1184,7 +1184,7 @@ html{scroll-behavior:smooth}:target{scroll-margin-top:64px}::selection{backgroun
       <h4>Our method vs the field - where we are different</h4>
       <p>The field runs scans and writes them up. We add three things that make the work defensible and cheap to run:</p>
       <ul>
-        <li><strong>Evidence integrity.</strong> On the host plane, collection and judgement are separate programs and every artifact is sealed at collection - so a finding traces to a control and a tamper-proof file, and the operator cannot influence the verdict (§8.2). Most scanners cannot claim this.</li>
+        <li><strong>Evidence integrity.</strong> On the host plane, collection and judgement are separate programs and every artifact is sealed at collection - so a finding traces to a control and a tamper-evident file, and the operator cannot influence the verdict (§8.2). Most scanners cannot claim this.</li>
         <li><strong>Off-host patch truth, for free.</strong> Windows patch state is derived from the exact build+UBR against Microsoft’s free MSRC feed and CISA KEV - <em>no Windows scanner purchase required</em> (§7.7).</li>
         <li><strong>One always-on platform, credentialed two-pass, senior-validated.</strong> One environment serves every service line (§4); every engagement runs unauthenticated then authenticated (§4.1); every important finding is confirmed by a senior before it ships (§10.1).</li>
       </ul>
@@ -1853,7 +1853,7 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
         <tr><td><b>Update Determination</b></td><td>Outstanding Microsoft OS updates derived off-host from the collected servicing level vs vendor data. No the CVE database; nothing executed on the host.</td></tr>
         <tr><td><b>Network Plane</b></td><td>Separately installed Nmap + a maintained vulnerability engine (Greenbone or the client’s scanner).</td></tr>
         <tr><td><b>Segmentation · Passive · Network-Config planes</b></td><td>Source-zone probes; client firewall/DNS/flow/SIEM first, SPAN/TAP + Zeek when justified; exported device configs + Batfish.</td></tr>
-        <tr><td><b>Evidence Plane</b></td><td>Immutable raw + hashes → normalised Evidence.json / Tests.csv / Coverage.csv → drafted findings → senior validation → reporting.</td></tr>
+        <tr><td><b>Evidence Plane</b></td><td>Change-evident raw + hashes → normalised Evidence.json / Tests.csv / Coverage.csv → drafted findings → senior validation → reporting.</td></tr>
       </tbody></table></div></section>
 
     <section id="s7-2"><p class="snum">7.2</p><h3>Design philosophy - why it is defensible</h3>
@@ -1870,7 +1870,7 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
           <text class="m" x="189" y="112" text-anchor="middle" font-size="8.5" fill="var(--accent)">SHA-256</text>
           <rect class="bx" x="218" y="86" width="150" height="72" rx="9"/>
           <text class="title" x="293" y="112" text-anchor="middle" font-size="12" font-weight="600">Raw evidence</text>
-          <text class="m" x="293" y="132" text-anchor="middle" font-size="9">sealed · immutable</text>
+          <text class="m" x="293" y="132" text-anchor="middle" font-size="9">sealed · change-evident</text>
           <path d="M368 122 H418" stroke="var(--accent)" stroke-width="1.5" fill="none" marker-end="url(#ar3)"/>
           <text class="m" x="393" y="112" text-anchor="middle" font-size="8.5" fill="var(--accent)">later, off-host</text>
           <rect class="bx" x="422" y="86" width="150" height="72" rx="9"/>
@@ -1890,7 +1890,7 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
           <text class="m" x="14" y="228" font-size="10">Every result carries four fields: the control tested · the evidence + its hash · the method used · the outcome.</text>
         </svg>
       </div><figcaption>The toolkit data flow - separation of collection from judgement, plus sealing, is what makes a finding defensible.</figcaption></figure>
-      <p><strong>Collect and judge are separate programs</strong> (the operator cannot influence the verdict); <strong>evidence is sealed at collection</strong> (a tampered file makes the analyzer refuse); <strong>credentialed, from the inside</strong> (reads the exact registry value and build - the most accurate position, almost no false positives). Every result carries the <strong>four fields</strong>: the control tested, the evidence and its hash, the method used, the outcome - so any finding traces back to a control and a tamper-proof artifact.</p></section>
+      <p><strong>Collect and judge are separate programs</strong> (the operator cannot influence the verdict); <strong>evidence is sealed at collection</strong> (a tampered file makes the analyzer refuse); <strong>credentialed, from the inside</strong> (reads the exact registry value and build - the most accurate position, almost no false positives). Every result carries the <strong>four fields</strong>: the control tested, the evidence and its hash, the method used, the outcome - so any finding traces back to a control and a tamper-evident artifact.</p></section>
 
     <section id="s7-3"><p class="snum">7.3</p><h3>The collector and its transport</h3>
       <div class="plain"><b>In plain words</b><p>To read a Windows machine's settings you have to log in and run the checks. The toolkit does this over <em>WinRM</em> - Windows' own built-in remote-management channel - using the client's admin account, running in memory and writing nothing to their disk. On a domain it logs in by computer name (Kerberos); on a standalone machine it uses an encrypted (HTTPS) login. The key discipline: we never switch remote access on ourselves - if it is off, the client turns it on, because quietly enabling it would itself be a security change.</p></div>
@@ -1969,7 +1969,7 @@ hashcat <span class="k">-m</span> 22000 hash.22000 wordlist.txt <span class="k">
           <rect class="ct" x="20" y="186" width="150" height="24" rx="12"/><text class="tt" x="95" y="203" text-anchor="middle" font-size="11" font-weight="600">Candidate</text><text class="t" x="185" y="203" font-size="11">flagged - needs a human's judgement</text>
         </svg>
       </div><figcaption>A check never just says &ldquo;bad.&rdquo; It records one of six honest states - and a Fail is only an observation until a human reviews it against the client's baseline. That discipline is what keeps false findings out of a report.</figcaption></figure>
-      <p>Four evidence layers, strictly bounded: <strong>Raw</strong> (immutable once hashed), <strong>Derived</strong> (regenerable Evidence.json/Tests.csv/Coverage.csv), <strong>Manual</strong> (verification + notes, each hashed), <strong>Report</strong> (only after validation). Sealing: every raw file is SHA-256-hashed at collection; the analyzer re-hashes - match proceeds, mismatch stops with zero results. Raw evidence is never edited; a correction is a new run.</p>
+      <p>Four evidence layers, strictly bounded: <strong>Raw</strong> (change-evident once hashed), <strong>Derived</strong> (regenerable Evidence.json/Tests.csv/Coverage.csv), <strong>Manual</strong> (verification + notes, each hashed), <strong>Report</strong> (only after validation). Sealing: every raw file is SHA-256-hashed at collection; the analyzer re-hashes - match proceeds, mismatch stops with zero results. Raw evidence is never edited; a correction is a new run.</p>
       <div class="callout warn"><p class="lab">Verify from a short path</p><p>A Windows path over 260 characters makes a sealed file read as <code>MISSING OR INVALID</code> - a path problem masquerading as tampering. Verify manifests from a short working path; otherwise a real <code>HASH MISMATCH</code> cannot be told apart from a path-length artifact.</p></div>
       <div class="tbl tight"><table><thead><tr><th>State</th><th>Meaning</th></tr></thead><tbody>
         <tr><td><b>Pass / Fail</b></td><td>Expected condition observed / a configuration observation (not automatically a vulnerability or severity).</td></tr>
@@ -2060,7 +2060,7 @@ control_refs: [ SC-39 Process Isolation, IA-5 Authenticator Mgmt ]</code></pre>
         <tr><td>Central collection over WinRM with Kerberos from one admin host to four servers in a single run, with the domain password ages, privileged groups and Kerberos ticket policy read from the domain controller in that run</td><td>Wireless-controller review against a real client export (proven so far on a lab TP-Link Omada software controller with a corporate and a guest WLAN)</td></tr>
         <tr><td>A live Greenbone Community Edition scan of the server segment (four hosts) exported, imported and analyzed into candidate rows; a controller intake imported and the controller rules evaluated</td><td>Two-vantage segmentation across real network segments (the lab has one subnet; the before-and-after used a host firewall block and recorded the blocked path as inconclusive, as designed)</td></tr>
         <tr><td>Credential-refused and unreachable targets record Error with the provider message and zero test rows; segmentation before-and-after on one port, with liveness corroborated; a German-language Windows 11 client recorded the account-policy rules as Unknown rather than a wrong value, and the collector now reads that policy through a language-independent API</td><td>Wireless host rules on a non-English host that has a wireless adapter (the German test host had none)</td></tr>
-        <tr><td>Offline update scan against the signed Microsoft catalogue; hardening-audit import; several sealed batches consolidated into one report; 102 automated tests pass</td><td>Estate scale: the launcher runs 1 to 20 hosts sequentially; a client fleet-management adapter is the next build</td></tr>
+        <tr><td>Offline update scan against the signed Microsoft catalogue; hardening-audit import; several sealed batches consolidated into one report; 225 automated tests pass, including the OS-update-aware Point and Print check (KB5005652, an absent value judged against the version-specific secure default rather than always failing) and the wireless-controller isolation and VLAN checks stated as configuration review rather than over-the-air enforcement</td><td>Estate scale: the launcher runs 1 to 20 hosts sequentially; a client fleet-management adapter is the next build</td></tr>
       </tbody></table></div>
       <p>The lab exposed fourteen defects, every one caught by the evidence rather than by a client: two under non-interactive invocation (script-relative defaults in <code>param()</code>; strict-mode failure when the network block is absent), the patch engine's product matching and release ordering, an empty build number on older servers, directory reads through a remote session, an empty privileged-group list, wireless wrongly reported present on servers, a segmentation result that could only ever be inconclusive, and a local account policy that could only be read in English. All are fixed and covered by tests. It is an internal R&amp;D build; production sign-off follows the gates in §7.12. <strong>The Windows capability is proven end to end in the lab; the remaining items need equipment or a client environment, not code.</strong></p>
       <div class="mem"><b>Remember - the honest line</b><p>Capability proven in a lab is not the same as capability proven at a client. Say exactly which platforms and which planes have evidence behind them, and name the ones that still need equipment or a real environment - never just “done.”</p></div></section>
@@ -3189,7 +3189,7 @@ tcpdump -i eth0 -w capture.pcap
 
     <div class="foot">
       Network Security Assessment Handbook · Practitioner training &amp; reference · 22 September 2026<br>
-      The toolkit performs assessment and identification - NIST SP 800-115 §3.4 + §4.3, never §5. · One baseline (800-53), client frameworks overlaid. · Raw evidence is immutable after hashing; reporting is downstream of senior validation. · Client reports name only real analyst-driven tools.
+      The toolkit performs assessment and identification - NIST SP 800-115 §3.4 + §4.3, never §5. · One baseline (800-53), client frameworks overlaid. · Raw evidence is change-evident after hashing; reporting is downstream of senior validation. · Client reports name only real analyst-driven tools.
     </div>
   </main>
 </div>
