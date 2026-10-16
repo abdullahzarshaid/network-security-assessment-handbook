@@ -32,6 +32,8 @@ Three ways, pick one:
 2. **[Download the PDF](https://github.com/abdullahzarshaid/network-security-assessment-handbook/raw/main/Network-Security-Assessment-Handbook.pdf)** (138 pages): bookmarked, with a clickable table of contents, for offline reading and printing.
 3. **[Download `handbook.html`](https://github.com/abdullahzarshaid/network-security-assessment-handbook/raw/main/handbook.html)** and open it in any browser for offline browsing with the same features as the website.
 
+A dated snapshot of the PDF and the standalone HTML is attached to each [release](https://github.com/abdullahzarshaid/network-security-assessment-handbook/releases/latest); the online version is always the current one.
+
 ## Who it's for
 
 Junior testers and blue-teamers who want to become genuinely competent without piecing it together
@@ -78,6 +80,12 @@ network-scan planes. MIT licence, no paid dependencies, 102 automated tests.
 This handbook is about **assessment and identification, not exploitation.** Offensive techniques are
 explained so you understand the control being verified, never to run outside a scope you are
 authorised, in writing, to test. Learning to attack is how you learn to defend; keep it legal.
+
+## Cite
+
+Bin Zarshaid, A. (2026). *Network Security Assessment: A Practitioner's Handbook* (October 2026 edition). https://abdullahzarshaid.github.io/network-security-assessment-handbook/
+
+GitHub's **Cite this repository** button and [CITATION.cff](CITATION.cff) carry the same entry in BibTeX and APA.
 
 ## License
 

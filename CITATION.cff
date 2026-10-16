@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If the handbook contributes to your work, please cite it as below."
+title: "Network Security Assessment: A Practitioner's Handbook"
+type: software
+version: "2026.10"
+date-released: "2026-10-17"
+license: CC-BY-4.0
+repository-code: "https://github.com/abdullahzarshaid/network-security-assessment-handbook"
+url: "https://abdullahzarshaid.github.io/network-security-assessment-handbook/"
+authors:
+  - family-names: "Bin Zarshaid"
+    given-names: "Abdullah"
+    orcid: "https://orcid.org/0009-0000-8354-5177"
+preferred-citation:
+  type: book
+  title: "Network Security Assessment: A Practitioner's Handbook"
+  edition: "October 2026 edition, 19 parts, 138 pages"
+  year: 2026
+  month: 10
+  license: CC-BY-4.0
+  url: "https://abdullahzarshaid.github.io/network-security-assessment-handbook/handbook.html"
+  authors:
+    - family-names: "Bin Zarshaid"
+      given-names: "Abdullah"
+      orcid: "https://orcid.org/0009-0000-8354-5177"
+keywords:
+  - network-security
+  - security-assessment
+  - penetration-testing
+  - wireless-security
+  - handbook
+abstract: "A practitioner's handbook across network, wireless, web, API, cloud and directory assessment, based on NIST SP 800-115, PTES, OWASP and MITRE ATT&CK, with worked scenarios, a protocol and attack reference and the full specification of the open-source PostureKit host assessment toolkit."
