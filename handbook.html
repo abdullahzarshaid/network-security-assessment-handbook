@@ -358,7 +358,7 @@ html{scroll-behavior:smooth}:target{scroll-margin-top:64px}::selection{backgroun
       </div>
     </header>
 
-    <p class="lead" style="margin-top:22px">This handbook is deliberately complete. It assumes only that the reader knows what an IP address and a firewall are. Parts&nbsp;I-II build the frame; Part&nbsp;III is the delivery architecture <em>and the actual plan</em> (§3.8-3.9), so you can tell the generic field from what we specifically do; Parts&nbsp;IV-VI are the working methodology for each domain, with tools, example commands and the errors juniors make; Part&nbsp;VII is the toolkit’s full specification; Part&nbsp;VIII is engagement management and reporting; Part&nbsp;IX is five worked scenarios; Part&nbsp;X is the desk reference; Part&nbsp;XI distils the field’s hard-won lessons and Part&nbsp;XII walks a first engagement from the scope call to the report; Parts&nbsp;XIII to XVI are the deep reference on protocols, network attacks, databases and tools; Part&nbsp;XVII shows how real corporate and banking networks are built and how a tester gets access to them; Part&nbsp;XVIII is a set of short use-case scenarios, Part&nbsp;XIX gathers verified further-reading resources. A standing rule runs throughout: our toolkit performs assessment and identification (NIST SP 800-115 §3.4 + §4.3), never exploitation (§5) - the offensive techniques are taught so the reader understands the control being verified, not to run in a vulnerability-assessment scope without separate written authorisation.</p>
+    <p class="lead" style="margin-top:22px">This handbook is deliberately complete. It assumes only that the reader knows what an IP address and a firewall are. Parts&nbsp;I-II build the frame; Part&nbsp;III is the delivery architecture <em>and a reference delivery model</em> (§3.8-3.9), so you can tell the generic field from what we specifically do; Parts&nbsp;IV-VI are the working methodology for each domain, with tools, example commands and the errors juniors make; Part&nbsp;VII is the toolkit’s full specification; Part&nbsp;VIII is engagement management and reporting; Part&nbsp;IX is five worked scenarios; Part&nbsp;X is the desk reference; Part&nbsp;XI distils the field’s hard-won lessons and Part&nbsp;XII walks a first engagement from the scope call to the report; Parts&nbsp;XIII to XVI are the deep reference on protocols, network attacks, databases and tools; Part&nbsp;XVII shows how real corporate and banking networks are built and how a tester gets access to them; Part&nbsp;XVIII is a set of short use-case scenarios, Part&nbsp;XIX gathers verified further-reading resources. A standing rule runs throughout: our toolkit performs assessment and identification (NIST SP 800-115 §3.4 + §4.3), never exploitation (§5) - the offensive techniques are taught so the reader understands the control being verified, not to run in a vulnerability-assessment scope without separate written authorisation.</p>
 
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
@@ -940,7 +940,7 @@ html{scroll-behavior:smooth}:target{scroll-margin-top:64px}::selection{backgroun
           <text class="m" x="18" y="310" font-size="10">READ THIS DIAGRAM: the umbrella is one discipline; each column is a domain; the chip is how far the team has taken it.</text>
           <text class="m" x="18" y="330" font-size="10">The two BUILT columns (Host + Directory) are one program - it does the directory part itself when the host is domain-joined.</text>
           <text class="m" x="18" y="350" font-size="10">Wireless is a peer, never a sub-task; only its radio layer needs special hardware and physical presence.</text>
-          <text class="m" x="18" y="370" font-size="10">Web/API/cloud is a separate manual discipline (the engine behind our client reports); it shares no code with the host work.</text>
+          <text class="m" x="18" y="370" font-size="10">Web/API/cloud is a separate manual discipline (the core of practitioner reporting); it shares no code with the host work.</text>
           <text class="m" x="18" y="396" font-size="10.5" fill="var(--accent)">Every domain runs from an EXTERNAL or an INTERNAL vantage - the vantage decides the tools, the domain decides what is checked.</text>
         </svg>
       </div><figcaption>The five domains of a network assessment, with the toolkit’s current coverage of each.</figcaption></figure></section>
@@ -1116,7 +1116,7 @@ html{scroll-behavior:smooth}:target{scroll-margin-top:64px}::selection{backgroun
         </svg>
       </div><figcaption>Connection architecture - external traffic goes direct over the internet; internal traffic runs through an encrypted VPN tunnel to a jump-box inside the client network.</figcaption></figure>
       <h4>Cloud environment (preferred)</h4>
-      <p>A small always-on cloud environment holds two VMs behind one public IP: a <strong>Kali Linux VM</strong> (primary scanning and tooling) and a <strong>Windows VM</strong> (Windows/AD work and any tool that runs best on Windows). One shared public IP gives the client a single address to whitelist and us one clean source. Because it is always on, scheduled scans run on a timer with no manual start. It is built once and reused for every client (starting cost ~US$25/month).</p>
+      <p>A small always-on cloud environment holds two VMs behind one public IP: a <strong>Kali Linux VM</strong> (primary scanning and tooling) and a <strong>Windows VM</strong> (Windows/AD work and any tool that runs best on Windows). One shared public IP gives the client a single address to whitelist and us one clean source. Because it is always on, scheduled scans run on a timer with no manual start. It is built once and reused for every client (at a low monthly cost).</p>
       <h4>Fallback from an testing machine</h4>
       <p>If the cloud is not approved or not yet ready, the same work runs from a testing Kali machine: external work scans from the machine; internal work connects through the client VPN, or logs into the client jump-box and runs the tools there. This works, but the machine must stay on for scheduled scans and the build-once benefit is lost.</p>
       <div class="tbl tight"><table><thead><tr><th>Setup</th><th>When used</th><th>Trade-off</th></tr></thead><tbody>
@@ -1167,17 +1167,17 @@ html{scroll-behavior:smooth}:target{scroll-margin-top:64px}::selection{backgroun
         <div class="a"><b>Region flexibility</b><span>Host per engagement for source-IP acceptance or data residency.</span></div>
         <div class="a"><b>Clean separation</b><span>Per-client data isolation; credentials removed at close; jump-box tools reverted.</span></div>
         <div class="a"><b>Evidence integrity (host plane)</b><span>Collect-vs-judge separation and sealed evidence make findings defensible (§7.2).</span></div>
-        <div class="a"><b>Low run cost</b><span>Open-source-first tooling and ~US$25/mo cloud keep the delivery cost near zero.</span></div>
+        <div class="a"><b>Low run cost</b><span>Open-source-first tooling and low-cost cloud infrastructure keep the delivery cost low.</span></div>
       </div></section>
 
-    <section id="s3-8"><p class="snum">3.8</p><h3>The delivery programme - the actual plan</h3>
-      <div class="plain"><b>In plain words</b><p>This is the plan in real terms, not a generic textbook one. The short version: we read a machine's <em>real</em> state by logging in (never guessing from outside), a senior reviews the results before anything ships, and the evidence is sealed so no one can quietly change it. Those three habits are what make a finding hard to argue with.</p></div>
-      <p>Everything elsewhere in this handbook is the <em>generic field</em> - how network assessment is done anywhere. This section is the <em class="key">specific plan</em>: what we actually deliver, and where our method differs from the textbook. Read the rest as knowledge; read this as the operating model.</p>
+    <section id="s3-8"><p class="snum">3.8</p><h3>A reference delivery model</h3>
+      <div class="plain"><b>In plain words</b><p>This is a delivery model in practical terms, not a generic textbook one. The short version: we read a machine's <em>real</em> state by logging in (never guessing from outside), a senior reviews the results before anything ships, and the evidence is sealed so no one can quietly change it. Those three habits are what make a finding hard to argue with.</p></div>
+      <p>Everything elsewhere in this handbook is the <em>generic field</em> - how network assessment is done anywhere. This section is the <em class="key">specific plan</em>: what a practitioner delivers, and where the method differs from the textbook. Read the rest as knowledge; read this as the operating model.</p>
       <h4>What we deliver - five service lines, one platform</h4>
       <div class="tbl tight"><table><thead><tr><th>Service line</th><th>What we do</th><th>Status</th></tr></thead><tbody>
         <tr><td><b>External network</b></td><td>Test internet-facing systems (web, mail, DNS, remote access) from outside.</td><td><span class="chip mature">Delivered</span></td></tr>
         <tr><td><b>Internal network + host</b></td><td>Assess the LAN over VPN/jump-box, plus credentialed host evidence via the toolkit.</td><td><span class="chip built">Host toolkit in validation</span></td></tr>
-        <tr><td><b>Web &amp; API</b></td><td>Manual Burp-driven testing - the mature engine behind our client reports.</td><td><span class="chip mature">Delivered</span></td></tr>
+        <tr><td><b>Web &amp; API</b></td><td>Manual Burp-driven testing - the core of a practitioner's reporting.</td><td><span class="chip mature">Delivered</span></td></tr>
         <tr><td><b>Cloud</b></td><td>Read-only posture &amp; identity review of Azure/AWS/GCP tenants.</td><td><span class="chip mature">Delivered</span></td></tr>
         <tr><td><b>Wireless</b></td><td>Segmentation &amp; client policy remotely; RF layer on-site with a monitor-mode adapter.</td><td><span class="chip pending">Config now · RF on-site</span></td></tr>
       </tbody></table></div>
@@ -2917,7 +2917,7 @@ tcpdump -i eth0 -w capture.pcap
 
     <section id="tl-6"><p class="snum">16.6</p><h3>Web and API tooling</h3>
       <div class="tbl"><table><thead><tr><th>Tool</th><th>What it does</th></tr></thead><tbody>
-        <tr><td><b><a href="https://portswigger.net/burp">Burp Suite</a></b></td><td>The intercepting proxy at the centre of web testing: see and modify every request, replay, and probe access control. The core web tool, and one of the tools named in client reports. Free training: <a href="https://portswigger.net/web-security">Web Security Academy</a>.</td></tr>
+        <tr><td><b><a href="https://portswigger.net/burp">Burp Suite</a></b></td><td>The intercepting proxy at the centre of web testing: see and modify every request, replay, and probe access control. The core web tool, and a standard tool in assessment reports. Free training: <a href="https://portswigger.net/web-security">Web Security Academy</a>.</td></tr>
         <tr><td><b><a href="https://github.com/ffuf/ffuf">ffuf</a> / <a href="https://github.com/OJ/gobuster">gobuster</a></b></td><td>Content and directory discovery: find hidden endpoints, parameters and virtual hosts by fuzzing.</td></tr>
         <tr><td><b><a href="https://github.com/sullo/nikto">Nikto</a></b></td><td>Quick checks for common web-server misconfigurations and known issues; a fast first look, not a full test.</td></tr>
         <tr><td><b><a href="https://sqlmap.org">sqlmap</a></b></td><td>Detects and demonstrates SQL injection. Detection is assessment; automated data extraction is intrusive and needs authorisation. Confirm carefully, do not dump.</td></tr>
